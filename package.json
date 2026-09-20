@@ -1,0 +1,10 @@
+﻿{
+  "name": "qazaq-script-transcriber",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Converter for Kazakh Arabic, Latin, Pinyin, Cyrillic and official Latin alphabets.",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "python scripts/generate_rules.py && node tests/converter.test.js"
+  }
+}
