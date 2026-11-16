@@ -1,4 +1,4 @@
-﻿(function (root) {
+(function (root) {
   'use strict';
 
   const RULES = root.QAZAQ_RULES || (typeof require === 'function' ? require('./rules.js') : []);

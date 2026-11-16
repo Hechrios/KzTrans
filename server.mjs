@@ -1,4 +1,4 @@
-﻿import { createServer } from 'node:http';
+import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';

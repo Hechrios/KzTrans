@@ -1,11 +1,33 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="kk" class="fonts-classic" data-theme="day" data-ark-theme="corporate" data-ark-depth="maximal">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#B0E0E6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="QAZAQ//SCRIPT">
+  <meta name="format-detection" content="telephone=no">
   <title>قازاق جازۋ ترانسكريپتسياسى</title>
-  <link rel="stylesheet" href="./styles.css">
+  <script>
+    /* 首屏前定主题与字体，避免亮色系统下黑屏闪烁 / 字体跳变 */
+    (function () {
+      try {
+        var saved = localStorage.getItem('qazaq-theme');
+        var theme = (saved === 'day' || saved === 'night') ? saved
+          : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'day' : 'night');
+        document.documentElement.dataset.theme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'night' ? '#172123' : '#B0E0E6');
+        if (localStorage.getItem('qazaq-font-mode-times') === 'noto') {
+          document.documentElement.classList.remove('fonts-classic');
+          document.documentElement.classList.add('fonts-noto');
+        }
+      } catch (e) { }
+    }());
+  </script>
+  <link rel="stylesheet" href="./styles.css?v=1">
 </head>
 <body>
   <a class="skip-link" href="#converterWorkspace">Skip to converter</a>
@@ -161,8 +183,8 @@
   </footer>
 
   <p class="sr-only" id="liveStatus" aria-live="polite"></p>
-  <script src="./rules.js"></script>
-  <script src="./converter.js"></script>
-  <script src="./app.js"></script>
+  <script src="./rules.js?v=1"></script>
+  <script src="./converter.js?v=1"></script>
+  <script src="./app.js?v=1"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   'use strict';
 
   const converter = window.QazaqConverter;
@@ -18,6 +18,7 @@
   const routeReadout = document.getElementById('routeReadout');
   const scriptTrack = document.getElementById('scriptTrack');
   const titleSubtitle = document.getElementById('titleSubtitle');
+  const outputPanel = document.querySelector('.output-panel');
   const defaultText = 'قازاق ٴالىپبيى';
   const canonicalScript = 'Cn-Ar';
   const SCRIPT_SUBTITLES = {
@@ -32,6 +33,7 @@
     'Kz-21': 'Qazaq Jazu Transkriptsiiasy'
   };
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const lightScheme = window.matchMedia('(prefers-color-scheme: light)');
 
   const state = {
     fontMode: 'classic',
@@ -79,6 +81,28 @@
       state.theme === 'night' ? '#172123' : '#B0E0E6'
     );
     if (persist) writePreference('qazaq-theme', state.theme);
+  }
+
+  function resolveInitialTheme() {
+    const saved = readPreference('qazaq-theme', '');
+    if (saved === 'day' || saved === 'night') return saved;
+    return lightScheme.matches ? 'day' : 'night';
+  }
+
+  /* 用户没手动选过主题时，跟随系统深浅色 */
+  function handleSchemeChange(event) {
+    const saved = readPreference('qazaq-theme', '');
+    if (saved === 'day' || saved === 'night') return;
+    setTheme(event.matches ? 'day' : 'night', false);
+  }
+
+  /* 手机上主操作后：收起键盘，把结果滚进视野 */
+  function revealOutput() {
+    if (!window.matchMedia('(max-width: 930px)').matches) return;
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    if (!outputPanel) return;
+    const top = outputPanel.getBoundingClientRect().top + window.pageYOffset - 12;
+    window.scrollTo({ top: top < 0 ? 0 : top, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
   }
 
   function updateTextDirection() {
@@ -200,7 +224,10 @@
     setTheme(state.theme === 'day' ? 'night' : 'day', true);
   });
 
-  convertButton.addEventListener('click', convertNow);
+  convertButton.addEventListener('click', function () {
+    convertNow();
+    revealOutput();
+  });
   copyButton.addEventListener('click', copyOutput);
   sourceScript.addEventListener('change', handleSourceChange);
   targetScript.addEventListener('change', handleTargetChange);
@@ -214,7 +241,9 @@
 
   inputText.value = defaultText;
   setFontMode(readPreference('qazaq-font-mode-times', 'classic'), false);
-  setTheme(readPreference('qazaq-theme', 'day'), false);
+  setTheme(resolveInitialTheme(), false);
+  if (lightScheme.addEventListener) lightScheme.addEventListener('change', handleSchemeChange);
+  else if (lightScheme.addListener) lightScheme.addListener(handleSchemeChange);
   updateTextDirection();
   convertNow();
   typeSubtitle(targetScript.value);

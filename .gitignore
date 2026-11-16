@@ -1,3 +1,21 @@
-﻿node_modules/
+# ---- 依赖 / 缓存产物：不入库，也不参与部署 ----
+node_modules/
+.deps/
+__pycache__/
+*.pyc
+
+# ---- 本地临时产物 ----
 test-output.txt
 *.log
+
+# ---- 本地校验用的一次性文件 ----
+.preview/
+_probe*
+_shot*
+
+# ---- 本地工具与编辑器目录（含嵌套 .git，务必忽略，否则会变成 160000 子模块指针）----
+.opencode/
+.codeartsdoer/
+.codegraph/
+.venv/
+~/
