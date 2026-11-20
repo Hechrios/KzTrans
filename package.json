@@ -5,6 +5,6 @@
   "description": "Converter for Kazakh Arabic, Latin, Pinyin, Cyrillic and official Latin alphabets.",
   "scripts": {
     "start": "node server.mjs",
-    "test": "python scripts/generate_rules.py && node tests/converter.test.js"
+    "test": "python scripts/generate_rules.py && node tests/converter.test.js && node tests/ui.test.js"
   }
 }
